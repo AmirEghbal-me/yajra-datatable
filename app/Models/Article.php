@@ -25,7 +25,7 @@ class Article extends Model
 
     public function tags(): MorphToMany
     {
-        return $this->morphToMany(Tag::class,'taggable');
+        return $this->morphToMany(Tag::class,'taggable','');
     }
 
     //global scope
