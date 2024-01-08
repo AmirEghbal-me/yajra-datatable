@@ -2,8 +2,8 @@
     <form action="/article/editArticle" method="post">
         <input type="hidden" name="_token" v-bind:value="csrf">
         <div class="row">
-            <label for="title" class="col-form-label">Title:</label>
-            <input type="text" name="title" id="titleTab"  v-model="title">
+            <label for="title" class="col-form-label" >Title:</label>
+            <input type="text" name="title" id="titleTab"  v-model="titleEdit">
         </div>
         <div class="row">
             <label for="description" class="col-form-label">Description:</label>
@@ -16,14 +16,20 @@
             </select>
         </div>
         <div class="row">
-            <lable for="isActive">Is Active</lable>
+            <label for="tagEdit" class="col-form-label">Tag:</label>
+            <select id="tagEdit" name="tags[]" v-model="tags" style="width: 100%;" multiple="multiple">
+                <option v-for="(title, id) in tags" :value="id" :key="id">{{ title }}</option>
+            </select>
+        </div>
+        <div class="row">
+            <label for="isActive">Is Active</label>
             <select class="isActive" id="isActiveTab" name="isActive" v-model="isActive" style="width: 100%">
                 <option value="0">no</option>
                 <option value="1">yes</option>
             </select>
         </div>
 
-        <input type="hidden" name="id" id="tab_article_id">
+        <input type="hidden" name="id" id="tab_article_id" v-model="id">
         <button type="submit">Submit</button>
     </form>
 </template>
@@ -34,23 +40,26 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            title: '',
+            id: '',
+            titleEdit: '',
             description: '',
             category: '',
             isActive: '',
             categories: [],
+            tags: [],
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        }
+        };
     },
     mounted() {
         this.getCategorie();
+        this.getTags();
     },
     methods: {
         submitForm() {
 
-            axios.post('/article/createArticle', { title: this.title, description: this.description, category: this.category, isActive: this.isActive })
+            axios.post('/article/editArticle', { title: this.titleEdit, id: this.id,description: this.description, category: this.category, isActive: this.isActive })
                 .then(response => {
-                    alert(response);
+                    $('#edit-tab').hide();
                 })
                 .catch(error => {
                     alert(error);
@@ -60,6 +69,15 @@ export default {
             axios.get('/article/categories')
                 .then(response => {
                     this.categories = response.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+        getTags() {
+            axios.get('/article/tags')
+                .then(response => {
+                    this.tags = response.data;
                 })
                 .catch(error => {
                     console.log(error);

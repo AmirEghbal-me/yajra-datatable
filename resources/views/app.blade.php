@@ -55,6 +55,7 @@
     $(document).ready(function() {
         $('#categoryAdd').select2();
         $('#tagAdd').select2();
+        //$('#tagEdit').select2();
     });
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     function editFunction(element){
@@ -81,6 +82,7 @@
                     $('#isActiveTab').val(response.isActive);
 
                     $('#categoryTab').select2().val(response.category).trigger("change");
+                    changeTags(response.tag);
                 }else{
                     alert("Invalid ID.");
                 }
@@ -102,6 +104,10 @@
 
             }
         });
+    }
+    function changeTags(id){
+        var arr = id.split(',');
+        $('#tagEdit').select2().val(arr).trigger("change");
     }
 </script>
 </body>

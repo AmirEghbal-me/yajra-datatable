@@ -92,7 +92,8 @@ class ArticlesController extends Controller
 
 
             if($article->save()){
-
+                $tag = Tag::whereIn('id',$request->post('tags'))->get();
+                $article->tags()->sync($tag);
                 $response['success'] = 1;
                 $response['msg'] = 'Update successfully';
             }else{
@@ -104,7 +105,7 @@ class ArticlesController extends Controller
             $response['success'] = 0;
             $response['msg'] = 'Invalid ID.';
         }
-
+        //return response()->json($response);
         return redirect('/article/Lists');
     }
 }
