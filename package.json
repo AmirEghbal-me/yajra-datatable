@@ -4,11 +4,12 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "postinstall": "node node_modules/datatables.net-editor/install.js ./Editor.zip"
+        "postinstall": "node node_modules/datatables.net-editor/install.js ./Editor.zip",
+        "watch": "vite build --watch"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",
-        "axios": "^1.6.1",
+        "axios": "^1.6.5",
         "bootstrap": "^5.2.3",
         "laravel-datatables-vite": "^0.5.2",
         "laravel-vite-plugin": "^1.0.0",
@@ -19,9 +20,14 @@
         "@vitejs/plugin-vue": "^5.0.2",
         "datatables.net-editor": "^2.2.2",
         "datatables.net-editor-bs5": "^2.2.0",
+        "datatables.net-vue3": "^2.1.3",
         "jquery-confirm": "^3.3.4",
         "moment-jalaali": "^0.10.0",
+        "select2": "^4.1.0-rc.0",
+        "v-select2-component": "^0.4.7",
         "validate.js": "^0.13.1",
-        "vue": "^3.4.5"
+        "vue": "^3.4.5",
+        "vue-multiselect": "^2.1.8",
+        "vue3-select2-component": "^0.1.7"
     }
 }

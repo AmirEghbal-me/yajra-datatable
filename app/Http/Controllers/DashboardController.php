@@ -111,6 +111,7 @@ class DashboardController extends Controller
 
             $response['title'] = $article->title;
             $response['description'] = $article->description;
+            $response['isActive'] = $article->isActive;
             $response['category'] = $category[0]->id;
             $response['tag'] = $array;
 

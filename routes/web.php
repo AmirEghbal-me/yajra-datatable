@@ -6,7 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\LoginMiddleware;
 use App\Http\Controllers\ArticlesController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\UsersController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -50,5 +50,23 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/articles', [ArticlesController::class, 'index'])->name('article.index');
 Route::post('/articles', [ArticlesController::class, 'store'])->name('article.store');
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users', [UsersController::class, 'index'])->name('users.index');
 
+
+
+Route::prefix('article')->group(function () {
+    Route::get('/Lists', function () {
+        return view('app');
+    });
+    Route::get('/data', [ArticlesController::class, 'getArticle']);
+    Route::get('/categories', [ArticlesController::class, 'getCategories']);
+    Route::get('/tags', [ArticlesController::class, 'getTags']);
+    Route::get('/delete/{id}', [ArticlesController::class, 'delete']);
+    Route::post('/createArticle', [ArticlesController::class, 'create']);
+    Route::post('/editArticle', [ArticlesController::class, 'update']);
+});
+Route::post('post-data', function (\Illuminate\Http\Request $request){
+    return response()->json([
+        'message' => 'Your requested data is : ' . $request->full_name
+    ]);
+});
