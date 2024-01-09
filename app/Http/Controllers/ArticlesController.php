@@ -69,12 +69,13 @@ class ArticlesController extends Controller
                 $article->tags()->save($tag);
             }
             $response['success'] = 1;
-            $response['msg'] = 'Update successfully';
+            $response['msg'] = 'َAdd successfully';
         }else{
             $response['success'] = 0;
             $response['msg'] = 'Record not updated';
         }
-        return redirect('/article/Lists');
+        //return redirect('/article/Lists');
+        return response()->json($response);
     }
 
     public function update(Request $request)

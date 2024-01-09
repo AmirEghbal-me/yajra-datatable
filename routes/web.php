@@ -29,6 +29,8 @@ Route::post('/edit', [RegisterController::class, 'postEdit']);
 
 Route::get('/login', [LoginController::class, 'index']);
 
+
+
 Route::middleware(LoginMiddleware::class)->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/delete/{id}', [DashboardController::class, 'delete'])->name('delete');
@@ -65,8 +67,4 @@ Route::prefix('article')->group(function () {
     Route::post('/createArticle', [ArticlesController::class, 'create']);
     Route::post('/editArticle', [ArticlesController::class, 'update']);
 });
-Route::post('post-data', function (\Illuminate\Http\Request $request){
-    return response()->json([
-        'message' => 'Your requested data is : ' . $request->full_name
-    ]);
-});
+

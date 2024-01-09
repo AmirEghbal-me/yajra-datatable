@@ -12,17 +12,19 @@ const columns = [
     { data: 'description' },
     {data: 'action', name: 'action', orderable: false, searchable: false,
         mRender: function (data, type, full){
-            var addButton = '<a href="/addArticle" class="btn btn-sm btn-danger addArticle"  data-id="'+full['id']+'">Add</a>';
-            var editButton = '<a href="#" class="btn btn-sm btn-danger editArticle"  data-id="'+full['id']+'" onclick="editFunction(this)">Edit</a>';
+            /*var addButton = '<a href="/addArticle" class="btn btn-sm btn-danger addArticle"  data-id="'+full['id']+'">Add</a>';*/
+            var editButton = '<a href="#" class="btn btn-sm btn-success "  data-id="'+full['id']+'" onclick="editFunction(this)"><i class="fa-solid fa-pen-to-square"></i></a>';
             var deleteButton = '<a href="#" class="btn btn-sm btn-danger deleteArticle"  data-id="'+full['id']+'" onclick="jqueryConfirm(this);"><i class="fa-solid fa-trash"></i></a>';
 
-            return addButton+'<br>'+deleteButton+'<br>'+editButton;
+            return /*addButton+'<br>'+*/deleteButton+'<br>'+editButton;
         }
     },
 ];
+
 </script>
 
 <template>
+
     <DataTable
         :columns="columns"
         :options="options"
@@ -38,6 +40,7 @@ const columns = [
         </tr>
         </thead>
     </DataTable>
+
 </template>
 
 <style>
