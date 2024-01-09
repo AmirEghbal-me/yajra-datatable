@@ -1,3 +1,4 @@
+In this sample project I want to create manual Auth system with laravel and provide Article system with polymorphis relationship
 Project part:
 1) laravel manual auth system(with route ['/register','/login','/logout','/dashboard'])
 2) Article section(with route['article/Lists']
