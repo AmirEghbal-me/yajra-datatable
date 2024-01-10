@@ -11,8 +11,11 @@
         </div>
         <div class="row">
             <label class="typo__label">Category</label>
-            <multiselect v-model="categories" :options="options" :preserve-search="true" placeholder="Pick some" label="title" track-by="id" :preselect-first="true">
-                <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length" v-show="!isOpen">{{ values.length }} options selected</span></template>
+            <multiselect
+                v-model="categories"
+                :options="optionsCategory"
+                :loading="isLoading"
+                :limit="3">
             </multiselect>
         </div>
         <div class="row">
@@ -59,11 +62,7 @@ export default {
             tags: [],
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             selected: null,
-            options: [
-                { title: 'ورزشی', id: '1' },
-                { title: 'سیاسی', id: '2' },
-                { title: 'هنر', id: '3' }
-            ],
+            optionsCategory: ['1'],
             optionsTag: [
                 { title: 'طوفان الاقصی', id: '1' },
                 { title: 'تیم ملی', id: '2' },
@@ -72,7 +71,7 @@ export default {
         }
     },
     mounted() {
-
+        this.fetchOptions()
     },
     methods: {
         submitForm() {console.log(this.tags);
@@ -91,6 +90,16 @@ export default {
                 description: description,
             });
         },
+        fetchOptions() {
+            axios.get('/article/categories')
+                .then(response => {console.log(response.data);
+
+                    this.optionsCategory = response.data;
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
     }
 }
 </script>

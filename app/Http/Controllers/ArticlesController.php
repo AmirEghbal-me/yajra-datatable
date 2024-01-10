@@ -50,8 +50,8 @@ class ArticlesController extends Controller
 
     public function getCategories()
     {
-        $categories = Category::all()->pluck('title', 'id')->toArray();
-        return response()->json($categories);
+        $categories = Category::all();
+        return json_encode($categories);
     }
 
     public function getTags()
