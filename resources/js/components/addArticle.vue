@@ -10,16 +10,19 @@
             <input type="text" name="description" id="description"  v-model="description">
         </div>
         <div class="row">
-            <label for="categoryAdd" class="col-form-label">Category:</label>
-            <select id="categoryAdd" name="categories" v-model="categories" style="width: 100%;">
-                <option v-for="(title, id) in categories" :value="id" :key="id">{{ title }}</option>
-            </select>
+            <label class="typo__label">Category</label>
+            <multiselect v-model="categories" :options="options" :preserve-search="true" placeholder="Pick some" label="title" track-by="id" :preselect-first="true">
+                <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length" v-show="!isOpen">{{ values.length }} options selected</span></template>
+            </multiselect>
         </div>
         <div class="row">
-            <label for="tagAdd" class="col-form-label">Tag:</label>
-            <select id="tagAdd" name="tags[]" v-model="tags" style="width: 100%;" multiple="multiple">
-                <option v-for="(title, id) in tags" :value="id" :key="id">{{ title }}</option>
-            </select>
+            <div>
+                <label class="typo__label">Tag</label>
+                <MultiselectTag name="tags[]" :multiple="true" v-model="tags" :options="optionsTag" :preserve-search="true" placeholder="Pick some" label="title" track-by="id" :preselect-first="true">
+                    <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length" v-show="!isOpen">{{ values.length }} options selected</span></template>
+                </MultiselectTag>
+
+            </div>
         </div>
         <div class="row">
             <lable for="isActive">Is Active</lable>
@@ -38,63 +41,46 @@
 
 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 import axios from 'axios';
+import Multiselect from 'vue-multiselect'
+import MultiselectTag from 'vue-multiselect'
+
 export default {
+    components: {
+        MultiselectTag,
+        Multiselect
+    },
     data() {
         return {
             title: '',
             description: '',
             category: '',
             isActive: '',
-            categories: [],
+            categories: null,
             tags: [],
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            selected: null,
+            options: [
+                { title: 'ورزشی', id: '1' },
+                { title: 'سیاسی', id: '2' },
+                { title: 'هنر', id: '3' }
+            ],
+            optionsTag: [
+                { title: 'طوفان الاقصی', id: '1' },
+                { title: 'تیم ملی', id: '2' },
+                { title: 'رضا عطاران', id: '3' }
+            ]
         }
     },
     mounted() {
-        this.getCategories();
-        this.getTags();
+
     },
     methods: {
-        /*submitForm(event) {
-            event.preventDefault();
+        submitForm() {console.log(this.tags);
             var id = $('#article_id').val();
-
-            var title = $('#title').val().trim();
-            var description = $('#description').val().trim();
-            var categories = $('#categoryAdd').val();
-            var tags = $('#tagAdd').val();
-            var isActive = $('#isActive').val();
-            $.ajax({
-                url: "/article/createArticle",
-                type: 'post',
-                data: {_token: CSRF_TOKEN,id: id,title: title, description: description, categories: categories, tags: tags, isActive: isActive},
-                dataType: 'json',
-                success: function(response){
-                    if(response.success == 1){
-                        $('#edit-tab').hide();
-                        $('.tab-pane').removeClass('active').removeClass('show');
-                        $('#home').addClass('active').addClass('show');
-                        $('#home-tab').addClass('active');
-
-                    }else{
-                        alert(response.msg);
-                    }
-                }
-            });
-            /!*axios.post('/article/createArticle', { title: this.title, description: this.description, category: this.category, isActive: this.isActive })
-                .then(response => {
-                    alert(response);
-                })
-                .catch(error => {
-                    alert(error);
-                });*!/
-        },*/
-        submitForm() {
-            var id = $('#article_id').val();
-            var title = $('#title').val().trim();
-            var description = $('#description').val().trim();
-            var categories = $('#categoryAdd').val();
-            var tags = $('#tagAdd').val();
+            var title = this.title;
+            var description = this.description;
+            var categories = this.categories;
+            var tags = this.tags;
             var isActive = $('#isActive').val();
             this.$emit('form-add-submitted', {
                 id: id,
@@ -105,25 +91,6 @@ export default {
                 description: description,
             });
         },
-        getCategories() {
-            axios.get('/article/categories')
-                .then(response => {
-                    this.categories = response.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        },
-        getTags() {
-            axios.get('/article/tags')
-                .then(response => {
-                    this.tags = response.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        },
-
     }
 }
 </script>

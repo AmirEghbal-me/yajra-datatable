@@ -5,10 +5,17 @@ use App\DataTables\ArticleDataTable;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
+use http\Env\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 class ArticlesController extends Controller
 {
+    public function getList()
+    {
+        $categories = Category::all()->pluck('title', 'id')->toArray();
+        $categories = Response()->json($categories);
+        return view('app',compact('categories'));
+    }
     public function index(ArticleDataTable $dataTable)
     {
         $tags = Tag::all();
@@ -60,12 +67,12 @@ class ArticlesController extends Controller
         $article->isActive = $request->isActive;
         $article->user_id = Auth::user()->id;
         $article->description = $request->description;
-        $article->category_id = $request->categories;
+        $article->category_id = $request->categories['id'];
 
         $response = array();
         if ($article->save()){
             foreach ($request->tags as $item){
-                $tag = Tag::find($item);
+                $tag = Tag::find($item['id']);
                 $article->tags()->save($tag);
             }
             $response['success'] = 1;

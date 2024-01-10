@@ -57,9 +57,10 @@ Route::get('/users', [UsersController::class, 'index'])->name('users.index');
 
 
 Route::prefix('article')->group(function () {
-    Route::get('/Lists', function () {
+    /*Route::get('/Lists', function () {
         return view('app');
-    });
+    });*/
+    Route::get('/Lists', [ArticlesController::class, 'getList']);
     Route::get('/data', [ArticlesController::class, 'getArticle']);
     Route::get('/categories', [ArticlesController::class, 'getCategories']);
     Route::get('/tags', [ArticlesController::class, 'getTags']);

@@ -1,10 +1,9 @@
 <template>
     <div>
-        <label class="typo__label">Tag</label>
-        <multiselect name="tags[]" :multiple="true" v-model="tags" :options="options" :preserve-search="true" placeholder="Pick some" label="title" track-by="id" :preselect-first="true">
+        <label class="typo__label">Category</label>
+        <multiselect v-model="categories" :options="options" :preserve-search="true" placeholder="Pick some" label="title" track-by="id" :preselect-first="true">
             <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length" v-show="!isOpen">{{ values.length }} options selected</span></template>
         </multiselect>
-
     </div>
 </template>
 
@@ -17,14 +16,17 @@ export default {
     },
     data () {
         return {
-            tags: [],
-            selectedValues: [],
+            categories: null,
+            selected: null,
             options: [
-                { title: 'طوفان الاقصی', id: '1' },
-                { title: 'تیم ملی', id: '2' },
-                { title: 'رضا عطاران', id: '3' }
+                { title: 'ورزشی', id: '1' },
+                { title: 'سیاسی', id: '2' },
+                { title: 'هنر', id: '3' }
             ]
         }
+    },
+    methods: {
+
     }
 }
 </script>
