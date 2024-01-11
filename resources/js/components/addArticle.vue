@@ -52,7 +52,7 @@
 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 import axios from 'axios';
 import Multiselect from 'vue-multiselect'
-
+import { inject } from 'vue'
 
 export default {
     components: {
@@ -80,6 +80,7 @@ export default {
     mounted() {
         this.fetchCategoryOptions(),
         this.fetchTagOptions()
+
     },
     methods: {
         submitForm() {

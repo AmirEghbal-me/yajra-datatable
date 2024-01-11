@@ -149,6 +149,9 @@ export default {
                 .catch(error => {
                     console.error(error)
                 })
+        },
+        mainFun(item){
+            alert(item);
         }
     }
 }

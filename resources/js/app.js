@@ -16,5 +16,5 @@ createApp(editArticle).mount("#editArticle")
 createApp(select2).mount("#select2")
 
 
-
+createApp(parentComponent).provide('globalVariable', 'some value').mount("#parentComponent")
 
