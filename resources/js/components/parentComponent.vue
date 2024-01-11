@@ -48,6 +48,7 @@ export default {
         return {
             ajaxUrl: '/article/categories',
             selectedValue: null,
+
         };
     },
     methods: {

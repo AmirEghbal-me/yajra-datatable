@@ -11,15 +11,28 @@
         </div>
         <div class="row">
             <label for="category" class="col-form-label">Category:</label>
-            <select id="categoryTab" name="category">
-                <option v-for="(title, id) in categories" :value="id" :key="id">{{ title }}</option>
-            </select>
+            <multiselect
+                v-model="categories"
+                :options="optionsCategory"
+                :loading="isLoading"
+                label="title"
+                track-by="id"
+                :limit="3">
+            </multiselect>
         </div>
         <div class="row">
             <label for="tagEdit" class="col-form-label">Tag:</label>
-            <select id="tagEdit" name="tags[]" v-model="tags" style="width: 100%;" multiple="multiple">
-                <option v-for="(title, id) in tags" :value="id" :key="id">{{ title }}</option>
-            </select>
+            <Multiselect
+                v-model="tags"
+                :options="optionsTag"
+                :multiple="true"
+                :taggable="true"
+                @tag="addTag"
+                label="title"
+                track-by="id"
+                :limit="3">
+                <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length" v-show="!isOpen">{{ values.length }} options selected</span></template>
+            </Multiselect>
         </div>
         <div class="row">
             <label for="isActive">Is Active</label>
@@ -37,7 +50,11 @@
 <script>
 
 import axios from 'axios';
+import Multiselect from "vue-multiselect";
 export default {
+    components: {
+        Multiselect
+    },
     data() {
         return {
             id: '',
@@ -48,11 +65,15 @@ export default {
             categories: [],
             tags: [],
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            optionsCategory: ['1'],
+            optionsTag: ['1']
         };
     },
     mounted() {
-        this.getCategories();
-        this.getTags();
+        /*this.getCategories();
+        this.getTags();*/
+        this.fetchCategoryOptions(),
+            this.fetchTagOptions()
     },
     methods: {
         /*submitForm() {
@@ -110,6 +131,25 @@ export default {
                     console.log(error);
                 });
         },
+        fetchCategoryOptions() {
+            axios.get('/article/categories')
+                .then(response => {
+                    this.optionsCategory = response.data;
+                    //this.categories = [{ id: '1', title: 'حادثه کرمان' }];
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        },
+        fetchTagOptions() {
+            axios.get('/article/tags')
+                .then(response => {
+                    this.optionsTag = response.data;
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
     }
 }
 </script>

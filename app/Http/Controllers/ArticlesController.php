@@ -50,13 +50,17 @@ class ArticlesController extends Controller
 
     public function getCategories()
     {
-        $categories = Category::all();
-        return json_encode($categories);
+        /*$categories = Category::all();
+        return json_encode($categories);*/
+        $categories = Category::select('id', 'title')->get()->toArray();
+        return response()->json($categories);
     }
 
     public function getTags()
     {
-        $tags = Tag::all()->pluck('title', 'id')->toArray();
+        /*$tags = Tag::all()->pluck('title', 'id')->toArray();
+        return response()->json($tags);*/
+        $tags = Tag::select('id','title')->get()->toArray();
         return response()->json($tags);
     }
 

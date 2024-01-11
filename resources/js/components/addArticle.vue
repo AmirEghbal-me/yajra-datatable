@@ -15,16 +15,23 @@
                 v-model="categories"
                 :options="optionsCategory"
                 :loading="isLoading"
+                label="title"
+                track-by="id"
                 :limit="3">
             </multiselect>
         </div>
         <div class="row">
             <div>
                 <label class="typo__label">Tag</label>
-                <MultiselectTag name="tags[]" :multiple="true" v-model="tags" :options="optionsTag" :preserve-search="true" placeholder="Pick some" label="title" track-by="id" :preselect-first="true">
+                <Multiselect
+                    v-model="tags"
+                    :options="optionsTag"
+                    :multiple="true"
+                    label="title"
+                    track-by="id"
+                    :limit="3">
                     <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length" v-show="!isOpen">{{ values.length }} options selected</span></template>
-                </MultiselectTag>
-
+                </Multiselect>
             </div>
         </div>
         <div class="row">
@@ -45,11 +52,11 @@
 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 import axios from 'axios';
 import Multiselect from 'vue-multiselect'
-import MultiselectTag from 'vue-multiselect'
+
 
 export default {
     components: {
-        MultiselectTag,
+
         Multiselect
     },
     data() {
@@ -71,10 +78,11 @@ export default {
         }
     },
     mounted() {
-        this.fetchOptions()
+        this.fetchCategoryOptions(),
+        this.fetchTagOptions()
     },
     methods: {
-        submitForm() {console.log(this.tags);
+        submitForm() {
             var id = $('#article_id').val();
             var title = this.title;
             var description = this.description;
@@ -90,10 +98,18 @@ export default {
                 description: description,
             });
         },
-        fetchOptions() {
+        fetchCategoryOptions() {
             axios.get('/article/categories')
-                .then(response => {console.log(response.data);
-
+                .then(response => {
+                    this.optionsCategory = response.data;
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        },
+        fetchTagOptions() {
+            axios.get('/article/tags')
+                .then(response => {
                     this.optionsCategory = response.data;
                 })
                 .catch(error => {
