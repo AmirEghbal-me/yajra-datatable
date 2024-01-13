@@ -1,5 +1,5 @@
 <template>
-    <form method="post" action="/article/editArticle">
+    <form method="post" @submit.prevent="submitForm">
         <input type="hidden" name="_token" v-bind:value="csrf">
         <div class="row">
             <label for="title" class="col-form-label" >Title:</label>
@@ -62,7 +62,7 @@ export default {
             description: '',
             category: '',
             isActive: '',
-            categories: [],
+            categories: null,
             tags: [],
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             optionsCategory: ['1'],
@@ -70,39 +70,16 @@ export default {
         };
     },
     mounted() {
-        /*this.getCategories();
-        this.getTags();*/
         this.fetchCategoryOptions(),
             this.fetchTagOptions()
     },
     methods: {
-        /*submitForm() {
-            const formData = {
-                title: $('#titleTab').val(),
-                id: $('#tab_article_id').val(),
-                description: $('#descriptionTab').val(),
-                category: $('#categoryTab').val(),
-                tags: $('#tagEdit').val(),
-                isActive: $('#isActiveTab').val(),
-
-            };
-            axios.post('/article/editArticle', formData)
-                .then(response => {
-                    $('#edit-tab').hide();
-                    $('.tab-pane').removeClass('active').removeClass('show');
-                    $('#home').addClass('active').addClass('show');
-                    $('#home-tab').addClass('active');
-                })
-                .catch(error => {
-                    alert(error);
-                });
-        },*/
         submitForm() {
             var id = $('#tab_article_vue_id').val();
             var title = $('#titleTab').val().trim();
             var description = $('#descriptionTab').val().trim();
-            var categories = $('#categoryTab').val();
-            var tags = $('#tagEdit').val();
+            var categories = this.categories;
+            var tags = this.tags;
             var isActive = $('#isActiveTab').val();
             this.$emit('form-edit-submitted', {
                 id: id,
@@ -112,24 +89,6 @@ export default {
                 title: title,
                 description: description,
             });
-        },
-        getCategories() {
-            axios.get('/article/categories')
-                .then(response => {
-                    this.categories = response.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        },
-        getTags() {
-            axios.get('/article/tags')
-                .then(response => {
-                    this.tags = response.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
         },
         fetchCategoryOptions() {
             axios.get('/article/categories')
@@ -150,9 +109,7 @@ export default {
                     console.error(error)
                 })
         },
-        mainFun(item){
-            alert(item);
-        }
     }
 }
+
 </script>

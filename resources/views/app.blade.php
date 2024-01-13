@@ -54,6 +54,7 @@
                     $('#isActiveTab').val(response.isActive);
 
                     $('#categoryTab').select2().val(response.category).trigger("change");
+
                     changeTags(response.tag);
                 }else{
                     alert("Invalid ID.");

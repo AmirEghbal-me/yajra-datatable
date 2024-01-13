@@ -99,13 +99,15 @@ class ArticlesController extends Controller
         if(!empty($article)){
             $article->title = $request->post('title');
             $article->description = $request->post('description');
-            $article->category_id = $request->post('category');
+            $article->category_id = $request->categories['id'];
             $article->isActive = $request->post('isActive');
 
 
             if($article->save()){
-                $tag = Tag::whereIn('id',$request->post('tags'))->get();
-                $article->tags()->sync($tag);
+                foreach ($request->tags as $item){
+                    $tag = Tag::find($item['id']);
+                    $article->tags()->save($tag);
+                }
                 $response['success'] = 1;
                 $response['msg'] = 'Update successfully';
             }else{
@@ -117,7 +119,7 @@ class ArticlesController extends Controller
             $response['success'] = 0;
             $response['msg'] = 'Invalid ID.';
         }
-        //return response()->json($response);
-        return redirect('/article/Lists');
+        return response()->json($response);
+        //return redirect('/article/Lists');
     }
 }

@@ -2,7 +2,7 @@
     <DataTable
         ref="dataTableRef"
         :columns="columns"
-        :options="options"
+        :options="{ select: true }"
         :ajax="fetchData"
         class="display nowrap"
     >
@@ -20,10 +20,12 @@
 <script setup lang="ts">
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
-
+import DataTablesLib from 'datatables.net-bs5';
+import 'datatables.net-select';
 import axios from "axios";
 
 DataTable.use(DataTablesCore);
+DataTable.use(DataTablesLib);
 
 const columns = [
     { data: 'id' },
@@ -35,14 +37,13 @@ const columns = [
         orderable: false,
         searchable: false,
         mRender(data, type, full) {
-            var editButton = '<a href="#" class="btn btn-sm btn-success" data-id="' + full['id'] + '"><i class="fa-solid fa-pen-to-square"></i></a>';
+            var editButton = '<a href="#" class="btn btn-sm btn-success" data-id="' + full['id'] + '" onclick="editFunction(this);"><i class="fa-solid fa-pen-to-square"></i></a>';
             var deleteButton = '<a href="#" class="btn btn-sm btn-danger deleteArticle" data-id="' + full['id'] + '" onclick="jqueryConfirm(this);"><i class="fa-solid fa-trash"></i></a>';
-            return deleteButton + '<br>' + editButton;
-        }
+            return deleteButton + ' ' + editButton;
+        },
     },
 ];
 
-// Function to fetch data using Axios
 const fetchData = async (data, callback, settings) => {
     try {
         const response = await axios.get('/article/data');
@@ -56,12 +57,11 @@ const fetchData = async (data, callback, settings) => {
         console.error(error);
     }
 };
-const confirmation = ()=>{
-    alert(true);
-}
 
-const options = {};
 
+
+const options = {
+};
 </script>
 
 <style>
