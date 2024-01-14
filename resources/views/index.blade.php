@@ -20,7 +20,7 @@
     @vite('resources/css/app.css')
 </head>
 <body>
-<div id="dataTableList" :data="{{ $users }}"></div>
+<div id="dataTableList" :users="{{ $users }}"></div>
 
 
 

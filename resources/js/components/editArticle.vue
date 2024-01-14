@@ -1,13 +1,14 @@
 <template>
+    <button @mouseover="getParentData">click</button>
     <form method="post" @submit.prevent="submitForm">
         <input type="hidden" name="_token" v-bind:value="csrf">
         <div class="row">
             <label for="title" class="col-form-label" >Title:</label>
-            <input type="text" id="titleTab" name="title">
+            <input type="text" id="titleTab" name="title" v-model="title">
         </div>
         <div class="row">
             <label for="description" class="col-form-label">Description:</label>
-            <input type="text" name="description" id="descriptionTab">
+            <input type="text" name="description" id="descriptionTab" v-model="description">
         </div>
         <div class="row">
             <label for="category" class="col-form-label">Category:</label>
@@ -36,13 +37,14 @@
         </div>
         <div class="row">
             <label for="isActive">Is Active</label>
-            <select class="isActive" id="isActiveTab" name="isActive" style="width: 100%">
+            <select v-model="isActive" id="isActiveTab" name="isActive" style="width: 100%">
                 <option value="0">no</option>
                 <option value="1">yes</option>
             </select>
         </div>
 
-        <input type="hidden" name="id" id="tab_article_vue_id">
+        <input type="hidden" name="id" id="tab_article_vue_id" v-model="id">
+        <input type="hidden" name="categoryHidden" id="categoryHidden">
         <button type="submit">Submit</button>
     </form>
 </template>
@@ -58,9 +60,10 @@ export default {
     data() {
         return {
             id: '',
-            titles: '',
+            title: '',
             description: '',
             category: '',
+            categoryHidden: '',
             isActive: '',
             categories: null,
             tags: [],
@@ -75,12 +78,12 @@ export default {
     },
     methods: {
         submitForm() {
-            var id = $('#tab_article_vue_id').val();
-            var title = $('#titleTab').val().trim();
-            var description = $('#descriptionTab').val().trim();
+            var id = this.id;
+            var title = this.title;
+            var description = this.description;
             var categories = this.categories;
             var tags = this.tags;
-            var isActive = $('#isActiveTab').val();
+            var isActive = this.isActive;
             this.$emit('form-edit-submitted', {
                 id: id,
                 categories: categories,
@@ -94,7 +97,7 @@ export default {
             axios.get('/article/categories')
                 .then(response => {
                     this.optionsCategory = response.data;
-                    //this.categories = [{ id: '1', title: 'حادثه کرمان' }];
+                    this.categories = [{ id: '2', title: 'سیاست' }];
                 })
                 .catch(error => {
                     console.error(error)
@@ -104,11 +107,33 @@ export default {
             axios.get('/article/tags')
                 .then(response => {
                     this.optionsTag = response.data;
+                    this.tags = [{ id: '1', title: 'حادثه کرمان' },{ id: '2', title: 'یارانه ها' }];
                 })
                 .catch(error => {
                     console.error(error)
                 })
         },
+        getParentData(){
+            this.id = this.$parent.articleId;
+            const postData = {
+                id: this.id,
+            };
+
+            const headers = {
+                'Content-Type': 'application/json',
+            };
+
+            axios.post('/getArticleData', postData, { headers })
+                .then((response) => {console.log(response);
+                    this.title = response.data.title;
+                    this.description = response.data.description;
+                    this.isActive = response.data.isActive;
+                    this.categories = response.data.category;
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
     }
 }
 

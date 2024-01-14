@@ -52,6 +52,7 @@
                     $('#titleTab').val(response.title);
                     $('#descriptionTab').val(response.description);
                     $('#isActiveTab').val(response.isActive);
+                    $('#categoryHidden').val(response.category);
 
                     $('#categoryTab').select2().val(response.category).trigger("change");
 

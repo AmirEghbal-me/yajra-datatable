@@ -10,7 +10,7 @@ class RegisterController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = 'Ali';
         return view('index',compact('users'));
 
 

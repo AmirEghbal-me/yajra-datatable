@@ -1,11 +1,34 @@
+<script lang="ts">
+import axios from "axios";
+export default {
+    data() {
+        return {
+            id: '',
+            articleData : ''
+        }
+    },
+
+    mounted() {
+        this.getData()
+    },
+    methods:{
+        confirmation(id){
+            this.$emit('articleIdSubmit',id)
+        },
+        getData(){
+            axios.get('/article/data')
+                .then(response => {
+                    this.articleData = response.data.data;
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+        }
+    }
+}
+</script>
 <template>
-    <DataTable
-        ref="dataTableRef"
-        :columns="columns"
-        :options="{ select: true }"
-        :ajax="fetchData"
-        class="display nowrap"
-    >
+    <table>
         <thead>
         <tr>
             <th>Id</th>
@@ -14,56 +37,14 @@
             <th>Action</th>
         </tr>
         </thead>
-    </DataTable>
+        <tbody>
+        <tr v-for="data in articleData">
+            <td>{{ data.id }}</td>
+            <td>{{ data.title }}</td>
+            <td>{{ data.description }}</td>
+            <td><button data-id="{{ data.id }}" @click="confirmation(data.id)" onclick="editFunction(this);">edit</button></td>
+        </tr>
+        </tbody>
+    </table>
 </template>
 
-<script setup lang="ts">
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net';
-import DataTablesLib from 'datatables.net-bs5';
-import 'datatables.net-select';
-import axios from "axios";
-
-DataTable.use(DataTablesCore);
-DataTable.use(DataTablesLib);
-
-const columns = [
-    { data: 'id' },
-    { data: 'title' },
-    { data: 'description' },
-    {
-        data: 'action',
-        name: 'action',
-        orderable: false,
-        searchable: false,
-        mRender(data, type, full) {
-            var editButton = '<a href="#" class="btn btn-sm btn-success" data-id="' + full['id'] + '" onclick="editFunction(this);"><i class="fa-solid fa-pen-to-square"></i></a>';
-            var deleteButton = '<a href="#" class="btn btn-sm btn-danger deleteArticle" data-id="' + full['id'] + '" onclick="jqueryConfirm(this);"><i class="fa-solid fa-trash"></i></a>';
-            return deleteButton + ' ' + editButton;
-        },
-    },
-];
-
-const fetchData = async (data, callback, settings) => {
-    try {
-        const response = await axios.get('/article/data');
-        callback({
-            draw: data.draw,
-            data: response.data.data,
-            recordsTotal: response.data.recordsTotal,
-            recordsFiltered: response.data.recordsFiltered,
-        });
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-
-
-const options = {
-};
-</script>
-
-<style>
-@import 'datatables.net-dt';
-</style>

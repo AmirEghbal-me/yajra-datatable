@@ -22,13 +22,13 @@ import add from './addArticle.vue';
                 </ul>
                 <div class="tab-content " id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <App/>
+                        <App @articleIdSubmit="handleArticleIdSubmitted" ref="childRef"/>
                     </div>
                     <div class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
                         <add @form-add-submitted="handleAddFormSubmitted" />
                     </div>
                     <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
-                        <edit @form-edit-submitted="handleEditFormSubmitted"/>
+                        <edit @form-edit-submitted="handleEditFormSubmitted" />
                     </div>
                 </div>
 
@@ -37,21 +37,27 @@ import add from './addArticle.vue';
     </div>
 </template>
 <script>
-
+import dataTable from '../App.vue';
+import { ref } from 'vue';
 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 export default {
     components: {
         add,
         edit,
+        dataTable,
     },
     data() {
         return {
             ajaxUrl: '/article/categories',
             selectedValue: null,
-
+            articleId : '',
+            articleData : ''
         };
     },
     methods: {
+        handleArticleIdSubmitted(id){
+            this.articleId = id;
+        },
         handleAddFormSubmitted(formData) {
             $.ajax({
                 url: "/article/createArticle",
