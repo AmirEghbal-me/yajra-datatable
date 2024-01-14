@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -14,8 +15,12 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.6/dist/vue-multiselect.min.css">
+
+
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/css/app.css')
 </head>
@@ -26,6 +31,8 @@
 @vite('resources/js/app.js')
 <script>
     $(document).ready(function() {
+
+
         $('#categoryAdd').select2();
         $('#tagAdd').select2();
     });
@@ -40,7 +47,7 @@
         var id = $(element).data('id');
         $('#tab_article_vue_id').val(id);
 
-        $.ajax({
+        /*$.ajax({
             url: "{{ route('getArticleData') }}",
             type: 'post',
             data: {_token: CSRF_TOKEN,id: id},
@@ -61,9 +68,9 @@
                     alert("Invalid ID.");
                 }
             }
-        });
+        });*/
     }
-    function jqueryConfirm(element){
+    function jqueryConfirm(element){console.log($(element).data('id'));
         var id = $(element).data('id');
         $.confirm({
             title: "Confirm!",
@@ -83,6 +90,7 @@
         var arr = id.split(',');
         $('#tagEdit').select2().val(arr).trigger("change");
     }
+
 </script>
 </body>
 </html>

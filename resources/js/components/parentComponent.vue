@@ -22,7 +22,7 @@ import add from './addArticle.vue';
                 </ul>
                 <div class="tab-content " id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <App @articleIdSubmit="handleArticleIdSubmitted" ref="childRef"/>
+                        <App @articleIdSubmit="handleArticleIdSubmitted" :edited="edited" ref="childRef"/>
                     </div>
                     <div class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
                         <add @form-add-submitted="handleAddFormSubmitted" />
@@ -40,6 +40,8 @@ import add from './addArticle.vue';
 import dataTable from '../App.vue';
 import { ref } from 'vue';
 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+const childRef = ref(null);
 export default {
     components: {
         add,
@@ -51,7 +53,8 @@ export default {
             ajaxUrl: '/article/categories',
             selectedValue: null,
             articleId : '',
-            articleData : ''
+            articleData : '',
+            edited : 0
         };
     },
     methods: {
@@ -73,8 +76,10 @@ export default {
                 dataType: 'json',
                 success: function(response){
                     if(response.success == 1){
+                        childRef.value.getData();
                         $('#edit-tab').hide();
                         $('.tab-pane').removeClass('active').removeClass('show');
+                        $('#add-tab').removeClass('active');
                         $('#home').addClass('active').addClass('show');
                         $('#home-tab').addClass('active');
 
@@ -99,6 +104,7 @@ export default {
                 dataType: 'json',
                 success: function(response){
                     if(response.success == 1){
+                        childRef.value.getData();
                         $('#edit-tab').hide();
                         $('.tab-pane').removeClass('active').removeClass('show');
                         $('#home').addClass('active').addClass('show');

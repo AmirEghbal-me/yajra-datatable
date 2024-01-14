@@ -102,10 +102,11 @@ class DashboardController extends Controller
         $category = $article->category()->get();
 
         $tags1 = $article->tags()->get();
-        $array = '';
+        $array = '[';
         foreach ($tags1 as $tag){
-            $array .= $tag->id.',';
+            $array .= '{id:'.$tag->id.',title:'."'".$tag->title."'".'},';
         }
+        $array .= ']';
         $response = array();
         if(!empty($article)){
 
@@ -113,6 +114,7 @@ class DashboardController extends Controller
             $response['description'] = $article->description;
             $response['isActive'] = $article->isActive;
             $response['category'] = $category[0]->id;
+            $response['categoryTitle'] = $category[0]->title;
             $response['tag'] = $array;
 
             $response['success'] = 1;

@@ -43,7 +43,7 @@ class ArticlesController extends Controller
 
     public function delete($id)
     {
-        $article = Article::where('id',$id)->delete();
+        Article::where('id',$id)->delete();
 
         return redirect('/article/Lists');
     }

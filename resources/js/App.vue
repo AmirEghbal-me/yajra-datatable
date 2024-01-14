@@ -1,34 +1,62 @@
-<script lang="ts">
+<script>
 import axios from "axios";
+import { watch } from 'vue';
+import "jquery/dist/jquery.min.js";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/jquery.dataTables.min.css";
+import $ from "jquery";
+
 export default {
+    props: ['edited'],
     data() {
         return {
             id: '',
-            articleData : ''
+            articleData : [],
+            edited : this.edited
         }
     },
-
     mounted() {
         this.getData()
+    },
+
+    watch: {
+        edited(newValue){
+            alert(newValue);
+        }
     },
     methods:{
         confirmation(id){
             this.$emit('articleIdSubmit',id)
         },
+        parent(){
+            this.getData();
+        },
         getData(){
-            axios.get('/article/data')
-                .then(response => {
-                    this.articleData = response.data.data;
-                })
-                .catch(error => {
-                    console.error(error)
-                })
+            fetch("/article/data")
+                .then((response) => response.json())
+                .then((data) => {
+                    this.articleData = data.data;
+                    setTimeout(() => {
+                        $("#example").DataTable({
+                            lengthMenu: [
+                                [5,10, 25, 50, -1],
+                                [5,10, 25, 50, "All"],
+                            ],
+                            pageLength: 5,
+                            destroy: true,
+                            retrieve: true,
+                        });
+                    });
+                });
         }
     }
 }
+
 </script>
+
 <template>
-    <table>
+    <table id="example" class="display table table-striped" style="width:100%">
         <thead>
         <tr>
             <th>Id</th>
@@ -42,9 +70,15 @@ export default {
             <td>{{ data.id }}</td>
             <td>{{ data.title }}</td>
             <td>{{ data.description }}</td>
-            <td><button data-id="{{ data.id }}" @click="confirmation(data.id)" onclick="editFunction(this);">edit</button></td>
+            <td>
+                <button :data-id="data.id" @click="confirmation(data.id)" onclick="editFunction(this);">edit</button>
+                <button :data-id="data.id"  onclick="jqueryConfirm(this);">Delete</button>
+            </td>
         </tr>
         </tbody>
     </table>
+    <style>
+        @import 'datatables.net-dt';
+    </style>
 </template>
 

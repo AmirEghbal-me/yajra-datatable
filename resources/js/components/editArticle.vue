@@ -1,6 +1,5 @@
 <template>
-    <button @mouseover="getParentData">click</button>
-    <form method="post" @submit.prevent="submitForm">
+    <form method="post" @mouseenter="getParentData" @submit.prevent="submitForm">
         <input type="hidden" name="_token" v-bind:value="csrf">
         <div class="row">
             <label for="title" class="col-form-label" >Title:</label>
@@ -66,7 +65,7 @@ export default {
             categoryHidden: '',
             isActive: '',
             categories: null,
-            tags: [],
+            tags: null,
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             optionsCategory: ['1'],
             optionsTag: ['1']
@@ -92,12 +91,16 @@ export default {
                 title: title,
                 description: description,
             });
+            this.title = '';
+            this.description = '';
+            this.categories = '';
+            this.tags = '';
+            this.isActive = '';
         },
         fetchCategoryOptions() {
             axios.get('/article/categories')
                 .then(response => {
                     this.optionsCategory = response.data;
-                    this.categories = [{ id: '2', title: 'سیاست' }];
                 })
                 .catch(error => {
                     console.error(error)
@@ -107,7 +110,6 @@ export default {
             axios.get('/article/tags')
                 .then(response => {
                     this.optionsTag = response.data;
-                    this.tags = [{ id: '1', title: 'حادثه کرمان' },{ id: '2', title: 'یارانه ها' }];
                 })
                 .catch(error => {
                     console.error(error)
@@ -124,11 +126,13 @@ export default {
             };
 
             axios.post('/getArticleData', postData, { headers })
-                .then((response) => {console.log(response);
+                .then((response) => {
+                    const tags = response.data.tag;
                     this.title = response.data.title;
                     this.description = response.data.description;
                     this.isActive = response.data.isActive;
-                    this.categories = response.data.category;
+                    this.categories =  { id: response.data.category, title:response.data.categoryTitle};
+                    //this.tags =  tags;
                 })
                 .catch((error) => {
                     console.error('Error:', error);
