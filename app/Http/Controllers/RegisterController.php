@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,11 @@ class RegisterController extends Controller
 {
     public function index()
     {
-        return view('register');
+        $users = User::all();
+        return view('index',compact('users'));
+
+
+        //return view('register');
     }
 
     public function create(Request $request)

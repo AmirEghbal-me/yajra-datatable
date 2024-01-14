@@ -6,7 +6,8 @@ createApp(App).mount("#app")
 import parentComponent from './components/parentComponent.vue'
 import addArticle from './components/addArticle.vue'
 import editArticle from './components/editArticle.vue'
-import select2 from './components/select2Tag.vue'
+import select2 from './components/select2Category.vue'
+import dataTableList from './components/dataTableList.vue';
 
 
 
@@ -14,7 +15,6 @@ createApp(parentComponent).mount("#parentComponent")
 createApp(addArticle).mount("#addArticle")
 createApp(editArticle).mount("#editArticle")
 createApp(select2).mount("#select2")
+createApp(dataTableList).mount('#dataTableList')
 
-
-createApp(parentComponent).provide('globalVariable', 'some value').mount("#parentComponent")
 

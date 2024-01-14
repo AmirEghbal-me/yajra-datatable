@@ -52,7 +52,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/articles', [ArticlesController::class, 'index'])->name('article.index');
 Route::post('/articles', [ArticlesController::class, 'store'])->name('article.store');
-Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+Route::get('/users', [RegisterController::class, 'index'])->name('users.index');
 
 
 
