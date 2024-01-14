@@ -127,7 +127,7 @@ export default {
 
             axios.post('/getArticleData', postData, { headers })
                 .then((response) => {
-                    const tags = response.data.tag;
+                    const tags = response.data.tag;console.log(tags);
                     this.title = response.data.title;
                     this.description = response.data.description;
                     this.isActive = response.data.isActive;

@@ -55,7 +55,7 @@ export default {
 
 </script>
 
-<template>
+<template><button @click="getData" style="display: none">reload</button>
     <table id="example" class="display table table-striped" style="width:100%">
         <thead>
         <tr>

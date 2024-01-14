@@ -2,6 +2,7 @@
     <form @submit.prevent="submitForm">
         <input type="hidden" name="_token" v-bind:value="csrf">
         <div class="row">
+            <p class="alert alert-danger alert-dismissible fade show" style="display: none">{{ titleMessage }}</p>
             <label for="title" class="col-form-label">Title:</label>
             <input type="text" name="title" id="title"  v-model="title">
         </div>
@@ -65,6 +66,7 @@ export default {
             description: '',
             category: '',
             isActive: '',
+            titleMessage: '',
             categories: null,
             tags: [],
             csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -75,6 +77,21 @@ export default {
                 { title: 'تیم ملی', id: '2' },
                 { title: 'رضا عطاران', id: '3' }
             ]
+        }
+    },
+    watch: {
+        title: {
+            handler: function(val) {
+
+                if (this.title.length >= 20){
+                    this.titleMessage = 'title should not more than 20';
+                    $('p').show();
+                }
+                if (this.title.length <= 20){
+                    $('p').hide();
+                }
+            },
+            immediate: true
         }
     },
     mounted() {

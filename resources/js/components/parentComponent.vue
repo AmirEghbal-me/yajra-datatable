@@ -76,13 +76,13 @@ export default {
                 dataType: 'json',
                 success: function(response){
                     if(response.success == 1){
-                        childRef.value.getData();
+
                         $('#edit-tab').hide();
                         $('.tab-pane').removeClass('active').removeClass('show');
                         $('#add-tab').removeClass('active');
                         $('#home').addClass('active').addClass('show');
                         $('#home-tab').addClass('active');
-
+                        childRef.value.getData();
                     }else{
                         alert(response.msg);
                     }

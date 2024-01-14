@@ -19,7 +19,7 @@
 
     <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.6/dist/vue-multiselect.min.css">
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/css/app.css')
