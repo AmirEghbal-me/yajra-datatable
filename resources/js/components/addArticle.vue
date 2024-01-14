@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submitForm">
+    <form @submit.prevent="validationForm">
         <input type="hidden" name="_token" v-bind:value="csrf">
         <div class="row">
             <p class="alert alert-danger alert-dismissible fade show" style="display: none">{{ titleMessage }}</p>
@@ -9,6 +9,12 @@
         <div class="row">
             <label for="description" class="col-form-label">Description:</label>
             <input type="text" name="description" id="description"  v-model="description">
+            <p v-if="errors.length">
+                <b>Please correct the following error(s):</b>
+                <ul>
+                    <li v-for="error in errors">{{ error }}</li>
+                </ul>
+            </p>
         </div>
         <div class="row">
             <label class="typo__label">Category</label>
@@ -62,6 +68,7 @@ export default {
     },
     data() {
         return {
+            errors:[],
             title: '',
             description: '',
             category: '',
@@ -100,7 +107,17 @@ export default {
 
     },
     methods: {
-        submitForm() {
+        validationForm:function(e){
+            this.errors = [];
+            if(!this.description) this.errors.push("Description required.");
+            if(this.description.length >= 15) this.errors.push("Description should not more than 15.");
+            e.preventDefault();
+
+            if (this.errors.length === 0){
+                this.submitForm();
+            }
+        },
+        submitForm:function(e){
             var id = $('#article_id').val();
             var title = this.title;
             var description = this.description;
@@ -115,6 +132,7 @@ export default {
                 title: title,
                 description: description,
             });
+            e.preventDefault();
         },
         fetchCategoryOptions() {
             axios.get('/article/categories')
