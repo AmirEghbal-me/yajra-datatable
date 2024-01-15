@@ -1,20 +1,9 @@
 import './bootstrap';
-import { createApp } from 'vue'
 
-import App from './App.vue'
-createApp(App).mount("#app")
-import parentComponent from './components/parentComponent.vue'
-import addArticle from './components/addArticle.vue'
-import editArticle from './components/editArticle.vue'
-import select2 from './components/select2Category.vue'
-import dataTableList from './components/dataTableList.vue';
+import { createApp } from 'vue';
+import parentComponent from './components/parentComponent.vue';
 
-
-
-createApp(parentComponent).mount("#parentComponent")
-createApp(addArticle).mount("#addArticle")
-createApp(editArticle).mount("#editArticle")
-createApp(select2).mount("#select2")
-createApp(dataTableList).mount('#dataTableList')
-
+createApp({})
+    .component('parentComponent', parentComponent)
+    .mount('#app')
 

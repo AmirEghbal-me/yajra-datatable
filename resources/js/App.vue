@@ -71,8 +71,8 @@ export default {
             <td>{{ data.title }}</td>
             <td>{{ data.description }}</td>
             <td>
-                <button :data-id="data.id" @click="confirmation(data.id)" onclick="editFunction(this);">edit</button>
-                <button :data-id="data.id"  onclick="jqueryConfirm(this);">Delete</button>
+                <button :data-id="data.id" @click="confirmation(data.id)" onclick="editFunction(this);" class="btn btn-sm btn-success "><i class="fa-solid fa-pen-to-square"></i></button>
+                <button :data-id="data.id"  onclick="jqueryConfirm(this);" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
             </td>
         </tr>
         </tbody>

@@ -5,7 +5,6 @@ import add from './addArticle.vue';
 
 </script>
 <template>
-
     <div class="container">
         <div class="row">
             <div class="col-xs-10">
